@@ -6,7 +6,6 @@
 $(document).ready(function(){
   loadCookieData();
   
-  $('.fake').click(fakeData);
   $('.clear-cookie').click(clearCookie);
 
   $('.toggle-calculations').click(toggleCalculations);
@@ -196,6 +195,8 @@ function fakeData(){
   $('.phase-1').find('.maximum-acceptable-loss').val(50000).change();
   
   $('.phase-2').find('.actual-safe-sell-price').val(127).change();
+  
+  $('.phase-3').find('.actual-final-sell-point').val(177).change();
 }
 
 function hideForm(form){
