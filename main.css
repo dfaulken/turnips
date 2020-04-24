@@ -52,12 +52,16 @@ tr {
   display: none;
 }
 
-.phase-1,.phase-2,.phase-3,.phase-4 {
+.phase-1,.phase-2,.phase-3,.phase-4,.info-mgmt {
   background: white;
   border-radius: 5px;
   margin: 1%;
   padding: 1%;
   padding-top: 5px;
+}
+
+.info-mgmt {
+  background: lightyellow;
 }
 
 .phase-2,.phase-3,.phase-4 {

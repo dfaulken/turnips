@@ -7,6 +7,7 @@ $(document).ready(function(){
   loadCookieData();
   
   $('.fake').click(fakeData);
+  $('.clear-cookie').click(clearCookie);
 
   $('.toggle-calculations').click(toggleCalculations);
   
@@ -15,6 +16,16 @@ $(document).ready(function(){
   $('.phase-2 input').change(evaluatePhase2Form);
   $('.phase-3 input').change(evaluatePhase3Form);
 });
+
+function clearCookie() {
+  for(var keyName in Cookies.get()) {
+    Cookies.remove(keyName);
+    var inputElement = $('input.' + keyName);
+    if(inputElement.length !== 0) {
+      inputElement.val('').change();
+    }
+  }
+}
 
 function evaluatePhase1Form(){
   var turnipBuyPrice = parseInt($('.phase-1').find('.turnip-buy-price').first().val());
@@ -201,7 +212,7 @@ function loadCookieData(){
     if(inputElement.length == 0) {
       Cookies.remove(keyName);
     }
-    else inputElement.val(Cookies.get(keyName));
+    else inputElement.val(Cookies.get(keyName)).change();
   }
 }
 
