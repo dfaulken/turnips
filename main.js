@@ -1,10 +1,7 @@
 // TODO set minimum properties of inputs dynamically throughout evaluation
 // TODO abstract function for reading field OR text
 // TODO cleanup 'price' vs. 'point'
-// TODO CSS in general
-// TODO page footer
 // TODO tables are hot garbage - be best David
-// TODO store values with cookies
 
 $(document).ready(function(){
   loadCookieData();
@@ -204,7 +201,7 @@ function loadCookieData(){
     if(inputElement.length == 0) {
       Cookies.remove(keyName);
     }
-    else element.val(Cookies.get(keyName));
+    else inputElement.val(Cookies.get(keyName));
   }
 }
 
