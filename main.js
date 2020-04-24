@@ -212,8 +212,11 @@ function loadCookieData(){
     if(inputElement.length == 0) {
       Cookies.remove(keyName);
     }
-    else inputElement.val(Cookies.get(keyName)).change();
+    else inputElement.val(Cookies.get(keyName));
   }
+  evaluatePhase1Form();
+  evaluatePhase2Form();
+  evaluatePhase3Form();
 }
 
 function toggleCalculations(){
