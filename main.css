@@ -1,0 +1,65 @@
+body {
+  background: gray;
+  font-family: sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+i {
+  font-family: serif;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  padding: 5px 1%;
+  vertical-align: middle;
+}
+
+tr {
+  border-bottom: 1px solid gray;
+  border-top: 1px solid gray;
+}
+
+.calculation {
+  display: none;
+}
+
+.content {
+  background: lightgray;
+  padding: 1%;
+  margin: 1%;
+  margin-bottom: 60px;
+}
+
+.footer {
+  background: gainsboro;
+  bottom: 0;
+  border-top: 3px solid black;
+  height: 30px;
+  left: 0;
+  padding-top: 10px;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+.recommendation {
+  display: none;
+}
+
+.phase-1,.phase-2,.phase-3,.phase-4 {
+  background: white;
+  border-radius: 5px;
+  margin: 1%;
+  padding: 1%;
+  padding-top: 5px;
+}
+
+.phase-2,.phase-3,.phase-4 {
+  display: none;
+}

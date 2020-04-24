@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Turnips</title>
+  </head>
+  <body>
+    <script src="jquery-3.5.0.min.js"></script>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css"></link>
+    <!--button class=fake>Fake data entry</button-->
+    <div class=content>
+      <h1>Animal Crossing: New Horizons &mdash; Stalk Market Calculator</h1>
+      <div class=phase-1>
+        <h2>Phase 1: Buying turnips</h2>
+        <table>
+          <tr>
+            <td>What is the turnip price in Bells?</td>
+            <td>
+              <input class=turnip-buy-price type=number placeholder=100 min=1></input>
+            </td>
+          </tr>
+          <tr>
+            <td>What amount of Bells do you want to spend?</td>
+            <td>
+              <input class=total-bells-spend type=number placeholder=100000 min=1></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              What is the maximum number of turnip bunches that you can store?
+              <p>
+                <i>Leave blank if this doesn't apply.</i>
+              </p>
+            </td>
+            <td>
+              <input class=max-bunches-turnips type=number></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              What is your safe sell price?
+              <p>
+                <i>This is a price above the buy price that you believe will definitely occur during the week.</i>
+              </p>
+            </td>
+            <td>
+              <input class=safe-sell-price type=number placeholder=125 min=1></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              What is your risky sell price?
+              <p>
+                <i>This is a price above your safe sell price that you think has a chance of occurring during the week.</i>
+              </p>
+            </td>
+            <td>
+              <input class=risky-sell-price type=number placeholder=175 min=1></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              What is your projected recoup sell point?
+              <p>
+                <i>This is the lowest that you think the Saturday PM price would be.</i>
+              </p>
+              <p>
+                <i>You will sell turnips on Saturday PM if the risky sell price isn't reached.</i>
+              </p>
+            </td>
+            <td>
+              <input class=recoup-sell-point type=number placeholder=60 min=1></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Maximum potential loss (if risky sell point not reached):
+              <p>
+                <i>If you don't see the 'risky' sell price during the week, this is the portion of your initial investment that you could lose.</i>
+              </p>
+            </td>
+            <td class=maximum-potential-loss></td>
+          </tr>
+          <tr>
+            <td>
+              What is your maximum acceptable loss?
+              <p>
+                <i>What amount of the maximum potential loss are you willing to risk?</i>
+              </p>
+              <p>
+                <i>The more loss you are willing to tolerate, the higher your potential profit will be.</i>
+              </p>
+            </td>
+            <td>
+              <input class=maximum-acceptable-loss type=number placeholder=20000 min=0></input>
+            </td>
+          </tr>
+          <tr class=recommendation>
+            <td colspan=2>
+              <p>
+                Based on the values that you have entered, you should buy
+                <span class=turnips-buy-count-hundreds></span>
+                turnips (<span class=turnips-buy-count-bunches></span>
+                bunches of turnips), which will cost you
+                <span class=actual-buy-cost></span>
+                Bells.
+              </p>
+              <p>
+                Once the turnip price reaches
+                <span class=safe-sell-price-repeat></span>
+                Bells or more, you should sell
+                <span class=safe-sell-amount-hundreds></span>
+                turnips (<span class=safe-sell-amount-bunches></span>
+                bunches of turnips).
+              </p>
+              <p>
+                If the risky sell price <em>does not</em> occur during the week, you will lose at most
+                <span class=risk-no-total-potential-loss></span>
+                Bells (assuming the recoup sell point is correct).
+              </p>
+              <p>
+                If the risky sell price <em>does</em> occur, you will have a profit of at least
+                <span class=risk-yes-total-potential-profit></span>
+                Bells.
+              </p>
+              <button class=toggle-calculations>Show calculations</button>
+              <p>
+                Make sure to come back and fill out phase 2 <em>before</em> selling any turnips.
+              </p>
+              <p>
+                If the safe sell price is higher than you anticipated, you may be able to save more turnips to sell at an even higher price.
+              </p>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>Number of turnips you can theoretically buy:</td>
+            <td class=turnips-buy-count-exact></td>
+          </tr>
+          <tr class=calculation>
+            <td>Actual amount to buy in hundreds:</td>
+            <td class=turnips-buy-count-hundreds></td>
+          </tr>
+          <tr class=calculation>
+            <td>Actual amount to buy in bunches:</td>
+            <td class=turnips-buy-count-bunches></td>
+          </tr>
+          <tr class=calculation>
+            <td>Actual cost to buy all turnips:</td>
+            <td class=actual-buy-cost></td>
+          </tr>
+          <tr class=calculation>
+            <td>Minimum acceptable total sales:</td>
+            <td class=minimum-acceptable-total-sales>
+          </tr>
+          <tr class=calculation>
+            <td>Sale price from total turnips at recoup price:</td>
+            <td class=total-turnips-recoup-sale-price></td>
+          </tr>
+          <tr class=calculation>
+            <td>Amount to cover through safe sale to offset potential loss:</td>
+            <td class=safe-sale-cover-amount></td>
+          </tr>
+          <tr class=calculation>
+            <td>Profit over recoup per turnip sold at safe price:</td>
+            <td class=safe-over-recoup-price-per-turnip></td>
+          </tr>
+          <tr class=calculation>
+            <td>Exact amount to sell at safe price:</td>
+            <td class=safe-sell-amount-exact></td>
+          </tr>
+          <tr class=calculation>
+            <td>Actual amount to sell in hundreds:</td>
+            <td class=safe-sell-amount-hundreds></td>
+          </tr>
+          <tr class=calculation>
+            <td>Actual amount to sell in bunches:</td>
+            <td class=safe-sell-amount-bunches></td>
+          </tr>
+          <tr class=calculation>
+            <td>Safe sale gross:</td>
+            <td class=safe-sale-gross></td>
+          </tr>
+          <tr class=calculation>
+            <td>Remaining turnips after safe sale:</td>
+            <td class=turnips-count-after-safe-sale></td>
+          </tr>
+          <tr class=calculation>
+            <td colspan=2>
+              <b>Assuming risky profit sell point is not reached:</b>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>Sale price of remaining turnips at recoup sell point:</td>
+            <td class=risk-no-recoup-sale-price-remaining></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total gross sales:</td>
+            <td class=risk-no-total-gross-sales></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total potential loss:</td>
+            <td class=risk-no-total-potential-loss></td>
+          </tr>
+          <tr class=calculation>
+            <td colspan=2>
+              <b>Assuming risky profit sell point is reached:</b>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>Sale price of remaining turnips at risky sell point:</td>
+            <td class=risk-yes-risky-sale-price-remaining></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total gross sales:</td>
+            <td class=risk-yes-total-gross-sales></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total potential profit:</td>
+            <td class=risk-yes-total-potential-profit></td>
+          </tr>
+        </table>
+      </div>
+      <div class=phase-2>
+        <h2>Phase 2: Selling first round of turnips</h2>
+        <table>
+          <tr>
+            <td>
+              What was the actual price when your safe sell price was reached?
+              <p>
+                <i>
+                  Based on the values that you entered for phase 1,
+                  this price should be at least
+                  <span class=safe-sell-price-repeat></span>
+                  Bells.
+                </i>
+              </p>
+            </td>
+            <td>
+              <input class=actual-safe-sell-price type=number placeholder=127 min=1></input>
+            </td>
+          </tr>
+          <tr class=recommendation>
+            <td colspan=2>
+              <p>
+                Based on the value that you have entered, you should sell
+                <span class=adjusted-turnips-safe-sale-count-hundreds></span>
+                turnips (<span class=adjusted-turnips-safe-sale-count-bunches></span>
+                bunches of turnips).
+              </p>
+              <p>
+                If the risky sell price <em>does not</em> occur during the week, you will now lose at most
+                <span class=risk-no-total-potential-loss></span>
+                Bells (assuming the recoup sell point is correct).
+              </p>
+              <p>
+                If the risky sell price <em>does</em> occur, you will now have a profit of at least
+                <span class=risk-yes-total-potential-profit></span>
+                Bells.
+              </p>
+              <button class=toggle-calculations>Show calculations</button>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>Adjusted risk abatement per turnip sold:</td>
+            <td class=adjusted-risk-abatement-per-turnip><td>
+          </tr>
+          <tr class=calculation>
+            <td>Adjusted number of turnips to sell:</td>
+            <td class=adjusted-turnips-safe-sale-count-exact><td>
+          </tr>
+          <tr class=calculation>
+            <td>Adjusted number to sell in hundreds:</td>
+            <td class=adjusted-turnips-safe-sale-count-hundreds><td>
+          </tr>
+          <tr class=calculation>
+            <td>Adjusted number to sell in bunches:</td>
+            <td class=adjusted-turnips-safe-sale-count-bunches><td>
+          </tr>
+          <tr class=calculation>
+            <td>Adjusted safe sell price:</td>
+            <td class=adjusted-safe-sell-price><td>
+          </tr>
+          <tr class=calculation>
+            <td>Turnips remaining after safe sale:</td>
+            <td class=remaining-after-safe-sale></td>
+          </tr>
+          <tr class=calculation>
+            <td colspan=2>
+              <b>Assuming risky profit sell point is not reached:</b>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>Sale price of remaining turnips at recoup sell point:</td>
+            <td class=risk-no-recoup-sale-price-remaining></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total gross sales:</td>
+            <td class=risk-no-total-gross-sales></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total potential loss:</td>
+            <td class=risk-no-total-potential-loss></td>
+          </tr>
+          <tr class=calculation>
+            <td colspan=2>
+              <b>Assuming risky profit sell point is reached:</b>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>Sale price of remaining turnips at risky sell point:</td>
+            <td class=risk-yes-risky-sale-price-remaining></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total gross sales:</td>
+            <td class=risk-yes-total-gross-sales></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total potential profit:</td>
+            <td class=risk-yes-total-potential-profit></td>
+          </tr>
+        </table>
+      </div>
+      <div class=phase-3>
+        <h2>Phase 3: Selling remaining turnips</h2>
+        <table>
+          <tr>
+            <td>What was the turnip price when you sold your remaining turnips?</td>
+            <td>
+              <input class=actual-final-sell-point type=number placeholder=177></input>
+            </td>
+          </tr>
+          <tr class=recommendation>
+            <td colspan=2>
+              <p>
+                Based on the value you have entered, you have made a total profit of
+                <span class=total-profit></span>
+                Bells.
+              </p>
+            </td>
+          </tr>
+          <tr class=calculation>
+            <td>2nd round sale price:</td>
+            <td class=final-sale-price></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total sales:</td>
+            <td class=total-sales></td>
+          </tr>
+          <tr class=calculation>
+            <td>Total profit:</td>
+            <td class=total-profit></td>
+          </tr>
+        </table>
+      </div>
+      <div class=phase-4>
+        <h2>Coming soon &mdash; Phase 4: Higher sale point occurred after all turnips sold</h2>
+        <p>Phase 4 will calculate lost profit based on having sold some or all turnips at the highest weekly price.</p>
+      </div>
+    </div>
+    <div class=footer>
+      &copy; 2020 David Faulkenberry
+    </div>
+  </body>
+</html>
