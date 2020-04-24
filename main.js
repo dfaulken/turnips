@@ -4,12 +4,16 @@
 // TODO CSS in general
 // TODO page footer
 // TODO tables are hot garbage - be best David
+// TODO store values with cookies
 
 $(document).ready(function(){
+  loadCookieData();
+  
   $('.fake').click(fakeData);
 
   $('.toggle-calculations').click(toggleCalculations);
   
+  $('input').change(setCookieData);
   $('.phase-1 input').change(evaluatePhase1Form);
   $('.phase-2 input').change(evaluatePhase2Form);
   $('.phase-3 input').change(evaluatePhase3Form);
@@ -194,6 +198,16 @@ function hideRecommendation(form){
   form.find('.recommendation').hide();
 }
 
+function loadCookieData(){
+  for(var keyName in Cookies.get()){
+    var inputElement = $('input.' + keyName);
+    if(inputElement.length == 0) {
+      Cookies.remove(keyName);
+    }
+    else element.val(Cookies.get(keyName));
+  }
+}
+
 function toggleCalculations(){
   var phase = $(this).parents('.phase-1,.phase-2,.phase-3,.phase-4').first();
   if(phase.find('.calculation').is(':visible')){
@@ -204,6 +218,10 @@ function toggleCalculations(){
     phase.find('.calculation').show();
     phase.find('.toggle-calculations').text('Hide calculations');
   }
+}
+
+function setCookieData(){
+  Cookies.set($(this).attr('class'), $(this).val());
 }
 
 function showForm(form){
