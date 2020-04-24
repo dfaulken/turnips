@@ -52,6 +52,11 @@ tr {
   display: none;
 }
 
+.recommendation span {
+  color: red;
+  font-weight: bold;
+}
+
 .phase-1,.phase-2,.phase-3,.phase-4,.info-mgmt {
   background: white;
   border-radius: 5px;
