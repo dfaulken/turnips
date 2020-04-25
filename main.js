@@ -29,9 +29,9 @@ function clearCookie() {
 
 // TODO hide max potential loss if form doesn't validate
 function evaluatePhase1Form(){
-  var turnipBuyPrice = parseInt($('.phase-1').find('.turnip-buy-price').first().val());
-  var totalBellsSpend = parseInt($('.phase-1').find('.total-bells-spend').first().val());
-  var maxBunchesTurnips = parseInt($('.phase-1').find('.max-bunches-turnips').first().val());
+  var turnipBuyPrice = readField($('.phase-1'), '.turnip-buy-price');
+  var totalBellsSpend = readField($('.phase-1'), '.total-bells-spend');
+  var maxBunchesTurnips = readField($('.phase-1'), '.max-bunches-turnips');
   
   var validBuyPrice = turnipBuyPrice != NaN && turnipBuyPrice > 0;
   var validBellsSpend = totalBellsSpend != NaN && totalBellsSpend > 0;
@@ -55,9 +55,9 @@ function evaluatePhase1Form(){
   var actualBuyCost = turnipsBuyCountHundreds * turnipBuyPrice;
   $('.phase-1').find('.actual-buy-cost').text(actualBuyCost);
   
-  var safeSellPrice = parseInt($('.phase-1').find('.safe-sell-price').first().val());
-  var riskySellPrice = parseInt($('.phase-1').find('.risky-sell-price').first().val());
-  var recoupSellPoint = parseInt($('.phase-1').find('.recoup-sell-point').first().val());
+  var safeSellPrice = readField($('.phase-1'), '.safe-sell-price')
+  var riskySellPrice = readField($('.phase-1'), '.risky-sell-price');
+  var recoupSellPoint = readField($('.phase-1'), '.recoup-sell-point');
   
   var validSafeSellPrice = safeSellPrice != NaN && safeSellPrice > turnipBuyPrice;
   var validRiskySellPrice = riskySellPrice != NaN && riskySellPrice > safeSellPrice;
@@ -73,7 +73,7 @@ function evaluatePhase1Form(){
   $('.phase-1').find('.maximum-potential-loss').text(maximumPotentialLoss);
   $('.safe-sell-price-repeat').text(safeSellPrice);
   
-  var maximumAcceptableLoss = parseInt($('.phase-1').find('.maximum-acceptable-loss').first().val());
+  var maximumAcceptableLoss = readField($('.phase-1'), '.maximum-acceptable-loss');
   
   var validMaximumAcceptableLoss = maximumAcceptableLoss != NaN && maximumAcceptableLoss >= 0 && maximumAcceptableLoss <= maximumPotentialLoss;
   if(!validMaximumAcceptableLoss){
@@ -113,11 +113,11 @@ function evaluatePhase2Form(){
     hideForm($('.phase-3'));
     return false;
   }
-  var actualSafeSellPoint = parseInt($('.phase-2').find('.actual-safe-sell-price').first().val());
-  var safeSellPoint = parseInt($('.phase-1').find('.safe-sell-price').first().val());
-  var recoupSellPoint = parseInt($('.phase-1').find('.recoup-sell-point').first().val());
-  var safeSaleCoverAmount = parseInt($('.phase-1').find('.safe-sale-cover-amount').first().text());
-  var turnipsBuyCountHundreds = parseInt($('.phase-1').find('.turnips-buy-count-hundreds').first().text());
+  var actualSafeSellPoint = readField($('.phase-2'), '.actual-safe-sell-price');
+  var safeSellPoint = readField($('.phase-1'), '.safe-sell-price');
+  var recoupSellPoint = readField($('.phase-1'), '.recoup-sell-point');
+  var safeSaleCoverAmount = readField($('.phase-1'), '.safe-sale-cover-amount');
+  var turnipsBuyCountHundreds = readField($('.phase-1'), '.turnips-buy-count-hundreds');
   
   var validActualSafeSellPoint = actualSafeSellPoint != NaN && actualSafeSellPoint >= safeSellPoint;
   if(!validActualSafeSellPoint){
@@ -151,10 +151,10 @@ function evaluatePhase3Form(){
     hideForm($('.phase-4'));
     return false;
   }
-  var actualFinalSellPoint = parseInt($('.phase-3').find('.actual-final-sell-point').first().val());
-  var remainingAfterSafeSale = parseInt($('.phase-2').find('.remaining-after-safe-sale').first().text());
-  var adjustedSafeSellPrice = parseInt($('.phase-2').find('.adjusted-safe-sell-price').first().text());
-  var actualBuyCost = parseInt($('.phase-1').find('.actual-buy-cost').first().text());
+  var actualFinalSellPoint = readField($('.phase-3'), '.actual-final-sell-point');
+  var remainingAfterSafeSale = readField($('.phase-2'), '.remaining-after-safe-sale');
+  var adjustedSafeSellPrice = readField($('.phase-2'), '.adjusted-safe-sell-price');
+  var actualBuyCost = readField($('.phase-1'), '.actual-buy-cost');
   
   var validActualFinalSellPoint = actualFinalSellPoint != NaN;
   if(!validActualFinalSellPoint){
@@ -176,9 +176,9 @@ function evaluatePhase3Form(){
 
 // This assumes that the preceding fields have been validated.
 function evaluateProjections(form, remainingTurnips, safeSaleGross){
-  var recoupSellPoint = parseInt($('.phase-1').find('.recoup-sell-point').first().val());
-  var actualBuyCost = parseInt($('.phase-1').find('.actual-buy-cost').first().text());
-  var riskySellPrice = parseInt($('.phase-1').find('.risky-sell-price').first().val());
+  var recoupSellPoint = readField($('.phase-1'), '.recoup-sell-point');
+  var actualBuyCost = readField($('.phase-1'), '.actual-buy-cost');
+  var riskySellPrice = readField($('.phase-1'), '.risky-sell-price');
 
   var riskNoRecoupSalePriceRemaining = remainingTurnips * recoupSellPoint;
   form.find('.risk-no-recoup-sale-price-remaining').text(riskNoRecoupSalePriceRemaining);
@@ -246,6 +246,15 @@ function toggleFormCalculations(form, setVisible){
     form.find('.calculation').hide();
     form.find('.toggle-calculations').text('Show calculations');
   }
+}
+
+function readField(phase, fieldName){
+  var field = phase.find(fieldName).first();
+  if(field.is('input')){
+    var value = field.val();
+  }
+  else var value = field.text();
+  return parseInt(value);
 }
 
 function setCookieData(){
