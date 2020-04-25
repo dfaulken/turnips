@@ -1,6 +1,4 @@
 // TODO set minimum properties of inputs dynamically throughout evaluation
-// TODO abstract function for reading field OR text
-// TODO cleanup 'price' vs. 'point'
 // TODO tables are hot garbage - be best David
 // TODO slideup and down instead of popping in and out
 
