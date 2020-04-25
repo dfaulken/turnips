@@ -9,10 +9,10 @@ $(document).ready(function(){
 
   $('.toggle-calculations').click(toggleCalculations);
   
-  $('input').change(setCookieData);
-  $('.phase-1 input').change(evaluatePhase1Form);
-  $('.phase-2 input').change(evaluatePhase2Form);
-  $('.phase-3 input').change(evaluatePhase3Form);
+  $('input').keyup(setCookieData);
+  $('.phase-1 input').keyup(evaluatePhase1Form);
+  $('.phase-2 input').keyup(evaluatePhase2Form);
+  $('.phase-3 input').keyup(evaluatePhase3Form);
 });
 
 function clearCookie() {
@@ -38,6 +38,7 @@ function evaluatePhase1Form(){
     hideRecommendation($('.phase-1'));
     toggleFormCalculations($('.phase-1'), false);
     hideForm($('.phase-2'));
+    $('.phase-1').find('.maximum-potential-loss').text('');
     return false;
   }
   var turnipsBuyCountExact = Math.floor(totalBellsSpend / turnipBuyPrice);
@@ -64,6 +65,7 @@ function evaluatePhase1Form(){
     hideRecommendation($('.phase-1'));
     toggleFormCalculations($('.phase-1'), false);
     hideForm($('.phase-2'));
+    $('.phase-1').find('.maximum-potential-loss').text('');
     return false;
   }
   var lossPerTurnip = turnipBuyPrice - recoupSellPoint;
@@ -200,18 +202,21 @@ function fakeData(){
   $('.phase-1').find('.risky-sell-price').val(160);
   $('.phase-1').find('.recoup-sell-point').val(50);
   $('.phase-1').find('.maximum-acceptable-loss').val(50000).change();
+  toggleFormCalculations($('.phase-1'), true);
   
   $('.phase-2').find('.actual-safe-sell-price').val(127).change();
+  toggleFormCalculations($('.phase-2'), true);
   
   $('.phase-3').find('.actual-final-sell-point').val(177).change();
+  toggleFormCalculations($('.phase-3'), true);
 }
 
 function hideForm(form){
-  form.hide();
+  form.slideUp();
 }
 
 function hideRecommendation(form){
-  form.find('.recommendation').hide();
+  form.find('.recommendation').slideUp();
 }
 
 function loadCookieData(){
@@ -237,11 +242,11 @@ function toggleFormCalculations(form, setVisible){
     setVisible = !form.find('.calculation').is(':visible');
   }
   if(setVisible){
-    form.find('.calculation').show();
+    form.find('.calculation').slideDown();
     form.find('.toggle-calculations').text('Hide calculations');
   }
   else {
-    form.find('.calculation').hide();
+    form.find('.calculation').slideUp();
     form.find('.toggle-calculations').text('Show calculations');
   }
 }
@@ -260,9 +265,9 @@ function setCookieData(){
 }
 
 function showForm(form){
-  form.show();
+  form.slideDown();
 }
 
 function showRecommendation(form){
-  form.find('.recommendation').show();
+  form.find('.recommendation').slideDown();
 }
