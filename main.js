@@ -2,6 +2,7 @@
 // TODO abstract function for reading field OR text
 // TODO cleanup 'price' vs. 'point'
 // TODO tables are hot garbage - be best David
+// TODO slideup and down instead of popping in and out
 
 $(document).ready(function(){
   loadCookieData();
@@ -26,6 +27,7 @@ function clearCookie() {
   }
 }
 
+// TODO hide max potential loss if form doesn't validate
 function evaluatePhase1Form(){
   var turnipBuyPrice = parseInt($('.phase-1').find('.turnip-buy-price').first().val());
   var totalBellsSpend = parseInt($('.phase-1').find('.total-bells-spend').first().val());
@@ -36,6 +38,7 @@ function evaluatePhase1Form(){
   var validMaxBunchesTurnips = maxBunchesTurnips != NaN && maxBunchesTurnips > 0;
   if(!(validBuyPrice && validBellsSpend)){
     hideRecommendation($('.phase-1'));
+    toggleFormCalculations($('.phase-1'), false);
     hideForm($('.phase-2'));
     return false;
   }
@@ -61,6 +64,7 @@ function evaluatePhase1Form(){
   var validRecoupSellPoint = recoupSellPoint != NaN && recoupSellPoint < turnipBuyPrice;
   if(!(validSafeSellPrice && validRiskySellPrice && validRecoupSellPoint)){
     hideRecommendation($('.phase-1'));
+    toggleFormCalculations($('.phase-1'), false);
     hideForm($('.phase-2'));
     return false;
   }
@@ -74,6 +78,7 @@ function evaluatePhase1Form(){
   var validMaximumAcceptableLoss = maximumAcceptableLoss != NaN && maximumAcceptableLoss >= 0 && maximumAcceptableLoss <= maximumPotentialLoss;
   if(!validMaximumAcceptableLoss){
     hideRecommendation($('.phase-1'));
+    toggleFormCalculations($('.phase-1'), false);
     hideForm($('.phase-2'));
     return false;
   }
@@ -104,6 +109,7 @@ function evaluatePhase1Form(){
 function evaluatePhase2Form(){
   if(!evaluatePhase1Form()){
     hideRecommendation($('.phase-2'));
+    toggleFormCalculations($('.phase-2'), false);
     hideForm($('.phase-3'));
     return false;
   }
@@ -116,6 +122,7 @@ function evaluatePhase2Form(){
   var validActualSafeSellPoint = actualSafeSellPoint != NaN && actualSafeSellPoint >= safeSellPoint;
   if(!validActualSafeSellPoint){
     hideRecommendation($('.phase-2'));
+    toggleFormCalculations($('.phase-2'), false);
     hideForm($('.phase-3'));
     return false;
   }
@@ -140,6 +147,7 @@ function evaluatePhase2Form(){
 function evaluatePhase3Form(){
   if(!(evaluatePhase1Form() && evaluatePhase2Form())){
     hideRecommendation($('.phase-3'));
+    toggleFormCalculations($('.phase-3'), false);
     hideForm($('.phase-4'));
     return false;
   }
@@ -151,6 +159,7 @@ function evaluatePhase3Form(){
   var validActualFinalSellPoint = actualFinalSellPoint != NaN;
   if(!validActualFinalSellPoint){
     hideRecommendation($('.phase-3'));
+    toggleFormCalculations($('.phase-3'), false);
     hideForm($('.phase-4'));
     return false;
   }
@@ -210,7 +219,7 @@ function hideRecommendation(form){
 function loadCookieData(){
   for(var keyName in Cookies.get()){
     var inputElement = $('input.' + keyName);
-    if(inputElement.length == 0) {
+    if(inputElement.length === 0) {
       Cookies.remove(keyName);
     }
     else inputElement.val(Cookies.get(keyName));
@@ -221,14 +230,21 @@ function loadCookieData(){
 }
 
 function toggleCalculations(){
-  var phase = $(this).parents('.phase-1,.phase-2,.phase-3,.phase-4').first();
-  if(phase.find('.calculation').is(':visible')){
-    phase.find('.calculation').hide();
-    phase.find('.toggle-calculations').text('Show calculations');
+  var form = $(this).parents('.phase-1,.phase-2,.phase-3,.phase-4').first();
+  toggleFormCalculations(form);
+}
+
+function toggleFormCalculations(form, setVisible){
+  if(setVisible === undefined) {
+    setVisible = !form.find('.calculation').is(':visible');
+  }
+  if(setVisible){
+    form.find('.calculation').show();
+    form.find('.toggle-calculations').text('Hide calculations');
   }
   else {
-    phase.find('.calculation').show();
-    phase.find('.toggle-calculations').text('Hide calculations');
+    form.find('.calculation').hide();
+    form.find('.toggle-calculations').text('Show calculations');
   }
 }
 
