@@ -1,6 +1,6 @@
 // TODO set minimum properties of inputs dynamically throughout evaluation
 // TODO tables are hot garbage - be best David
-// TODO slideup and down instead of popping in and out
+// TODO better input feedback
 
 $(document).ready(function(){
   loadCookieData();
@@ -25,8 +25,7 @@ function clearCookie() {
   }
 }
 
-// TODO hide max potential loss if form doesn't validate
-function evaluatePhase1Form(){
+function evaluatePhase1Form(quickLoad){
   var turnipBuyPrice = readField($('.phase-1'), '.turnip-buy-price');
   var totalBellsSpend = readField($('.phase-1'), '.total-bells-spend');
   var maxBunchesTurnips = readField($('.phase-1'), '.max-bunches-turnips');
@@ -101,12 +100,12 @@ function evaluatePhase1Form(){
   var turnipsCountAfterSafeSale = turnipsBuyCountHundreds - safeSellAmountHundreds;
   $('.phase-1').find('.turnips-count-after-safe-sale').text(turnipsCountAfterSafeSale);
   evaluateProjections($('.phase-1'), turnipsCountAfterSafeSale, safeSaleGross);
-  showRecommendation($('.phase-1'));
-  showForm($('.phase-2'));
+  showRecommendation($('.phase-1'), quickLoad);
+  showForm($('.phase-2'), quickLoad);
   return true;
 }
 
-function evaluatePhase2Form(){
+function evaluatePhase2Form(quickLoad){
   if(!evaluatePhase1Form()){
     hideRecommendation($('.phase-2'));
     toggleFormCalculations($('.phase-2'), false);
@@ -139,12 +138,12 @@ function evaluatePhase2Form(){
   var remainingAfterSafeSale = turnipsBuyCountHundreds - adjustedTurnipsSafeSaleCountHundreds;
   $('.phase-2').find('.remaining-after-safe-sale').text(remainingAfterSafeSale);
   evaluateProjections($('.phase-2'), remainingAfterSafeSale, adjustedSafeSellPrice);
-  showRecommendation($('.phase-2'));
-  showForm($('.phase-3'));
+  showRecommendation($('.phase-2'), quickLoad);
+  showForm($('.phase-3'), quickLoad);
   return true;
 }
 
-function evaluatePhase3Form(){
+function evaluatePhase3Form(quickLoad){
   if(!(evaluatePhase1Form() && evaluatePhase2Form())){
     hideRecommendation($('.phase-3'));
     toggleFormCalculations($('.phase-3'), false);
@@ -169,8 +168,8 @@ function evaluatePhase3Form(){
   $('.phase-3').find('.total-sales').text(totalSales);
   var totalProfit = totalSales - actualBuyCost;
   $('.phase-3').find('.total-profit').text(totalProfit);
-  showRecommendation($('.phase-3'));
-  showForm($('.phase-4'));
+  showRecommendation($('.phase-3'), quickLoad);
+  showForm($('.phase-4'), quickLoad);
   return true;
 }
 
@@ -211,12 +210,18 @@ function fakeData(){
   toggleFormCalculations($('.phase-3'), true);
 }
 
-function hideForm(form){
-  form.slideUp();
+function hideForm(form, quickLoad){
+  if(quickLoad){
+    form.hide();
+  }
+  else form.slideUp();
 }
 
-function hideRecommendation(form){
-  form.find('.recommendation').slideUp();
+function hideRecommendation(form, quickLoad){
+  if(quickLoad){
+    form.find('.recommendation').hide();
+  }
+  else form.find('.recommendation').slideUp();
 }
 
 function loadCookieData(){
@@ -227,9 +232,10 @@ function loadCookieData(){
     }
     else inputElement.val(Cookies.get(keyName));
   }
-  evaluatePhase1Form();
-  evaluatePhase2Form();
-  evaluatePhase3Form();
+  // Hide elements on page load, not slide.
+  evaluatePhase1Form(true);
+  evaluatePhase2Form(true);
+  evaluatePhase3Form(true);
 }
 
 function toggleCalculations(){
