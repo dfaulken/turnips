@@ -34,9 +34,9 @@ function evaluatePhase1Form(quickLoad){
   var validBellsSpend = totalBellsSpend != NaN && totalBellsSpend > 0;
   var validMaxBunchesTurnips = maxBunchesTurnips != NaN && maxBunchesTurnips > 0;
   if(!(validBuyPrice && validBellsSpend)){
-    hideRecommendation($('.phase-1'));
+    hideRecommendation($('.phase-1'), quickLoad);
     toggleFormCalculations($('.phase-1'), false);
-    hideForm($('.phase-2'));
+    hideForm($('.phase-2'), quickLoad);
     $('.phase-1').find('.maximum-potential-loss').text('');
     return false;
   }
@@ -61,9 +61,9 @@ function evaluatePhase1Form(quickLoad){
   var validRiskySellPrice = riskySellPrice != NaN && riskySellPrice > safeSellPrice;
   var validRecoupSellPoint = recoupSellPoint != NaN && recoupSellPoint < turnipBuyPrice;
   if(!(validSafeSellPrice && validRiskySellPrice && validRecoupSellPoint)){
-    hideRecommendation($('.phase-1'));
+    hideRecommendation($('.phase-1'), quickLoad);
     toggleFormCalculations($('.phase-1'), false);
-    hideForm($('.phase-2'));
+    hideForm($('.phase-2'), quickLoad);
     $('.phase-1').find('.maximum-potential-loss').text('');
     return false;
   }
@@ -76,9 +76,9 @@ function evaluatePhase1Form(quickLoad){
   
   var validMaximumAcceptableLoss = maximumAcceptableLoss != NaN && maximumAcceptableLoss >= 0 && maximumAcceptableLoss <= maximumPotentialLoss;
   if(!validMaximumAcceptableLoss){
-    hideRecommendation($('.phase-1'));
+    hideRecommendation($('.phase-1'), quickLoad);
     toggleFormCalculations($('.phase-1'), false);
-    hideForm($('.phase-2'));
+    hideForm($('.phase-2'), quickLoad);
     return false;
   }
   var minimumAcceptableTotalSales = actualBuyCost - maximumAcceptableLoss;
@@ -107,9 +107,9 @@ function evaluatePhase1Form(quickLoad){
 
 function evaluatePhase2Form(quickLoad){
   if(!evaluatePhase1Form()){
-    hideRecommendation($('.phase-2'));
+    hideRecommendation($('.phase-2'), quickLoad);
     toggleFormCalculations($('.phase-2'), false);
-    hideForm($('.phase-3'));
+    hideForm($('.phase-3'), quickLoad);
     return false;
   }
   var actualSafeSellPoint = readField($('.phase-2'), '.actual-safe-sell-price');
@@ -120,9 +120,9 @@ function evaluatePhase2Form(quickLoad){
   
   var validActualSafeSellPoint = actualSafeSellPoint != NaN && actualSafeSellPoint >= safeSellPoint;
   if(!validActualSafeSellPoint){
-    hideRecommendation($('.phase-2'));
+    hideRecommendation($('.phase-2'), quickLoad);
     toggleFormCalculations($('.phase-2'), false);
-    hideForm($('.phase-3'));
+    hideForm($('.phase-3'), quickLoad);
     return false;
   }
   var adjustedRiskAbatementPerTurnip = actualSafeSellPoint - recoupSellPoint;
@@ -145,9 +145,9 @@ function evaluatePhase2Form(quickLoad){
 
 function evaluatePhase3Form(quickLoad){
   if(!(evaluatePhase1Form() && evaluatePhase2Form())){
-    hideRecommendation($('.phase-3'));
+    hideRecommendation($('.phase-3'), quickLoad);
     toggleFormCalculations($('.phase-3'), false);
-    hideForm($('.phase-4'));
+    hideForm($('.phase-4'), quickLoad);
     return false;
   }
   var actualFinalSellPoint = readField($('.phase-3'), '.actual-final-sell-point');
@@ -157,9 +157,9 @@ function evaluatePhase3Form(quickLoad){
   
   var validActualFinalSellPoint = actualFinalSellPoint != NaN;
   if(!validActualFinalSellPoint){
-    hideRecommendation($('.phase-3'));
+    hideRecommendation($('.phase-3'), quickLoad);
     toggleFormCalculations($('.phase-3'), false);
-    hideForm($('.phase-4'));
+    hideForm($('.phase-4'), quickLoad);
     return false;
   }
   var finalSalePrice = actualFinalSellPoint * remainingAfterSafeSale;
@@ -270,10 +270,16 @@ function setCookieData(){
   Cookies.set($(this).attr('class'), $(this).val());
 }
 
-function showForm(form){
-  form.slideDown();
+function showForm(form, quickLoad){
+  if(quickLoad){
+    form.show();
+  }
+  else form.slideDown();
 }
 
-function showRecommendation(form){
-  form.find('.recommendation').slideDown();
+function showRecommendation(form, quickLoad){
+  if(quickLoad){
+    form.find('.recommendation').show();
+  }
+  else form.find('.recommendation').slideDown();
 }
