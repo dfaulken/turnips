@@ -211,14 +211,14 @@ function fakeData(){
 }
 
 function hideForm(form, quickLoad){
-  if(quickLoad){
+  if(quickLoad === true){
     form.hide();
   }
   else form.slideUp();
 }
 
 function hideRecommendation(form, quickLoad){
-  if(quickLoad){
+  if(quickLoad === true){
     form.find('.recommendation').hide();
   }
   else form.find('.recommendation').slideUp();
@@ -271,14 +271,14 @@ function setCookieData(){
 }
 
 function showForm(form, quickLoad){
-  if(quickLoad){
+  if(quickLoad === true){
     form.show();
   }
   else form.slideDown();
 }
 
 function showRecommendation(form, quickLoad){
-  if(quickLoad){
+  if(quickLoad === true){
     form.find('.recommendation').show();
   }
   else form.find('.recommendation').slideDown();
